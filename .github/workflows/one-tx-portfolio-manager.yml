@@ -1,0 +1,38 @@
+name: one-tx-portfolio-manager
+
+on:
+  schedule:
+    - cron: "0 14 * * 1"   # Mondays 14:00 UTC; edit to taste
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: rebalance, dca or sweep
+        default: rebalance
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    # Runs in your copy of the template, not in the upstream examples repo (which has no secrets).
+    if: github.repository != 'Infrared-Trading-Technologies/infrared-examples'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: one-tx-portfolio-manager
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: one-tx-portfolio-manager/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      # Dry-run unless the repository variable EXECUTE is set to "true".
+      - run: node dist/cli.js "$MODE" --config config.yaml ${{ vars.EXECUTE == 'true' && '--execute' || '' }}
+        env:
+          MODE: ${{ inputs.mode || vars.MODE || 'rebalance' }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL: ${{ secrets.RPC_URL }}
+          INFRARED_API_KEY: ${{ secrets.INFRARED_API_KEY }}

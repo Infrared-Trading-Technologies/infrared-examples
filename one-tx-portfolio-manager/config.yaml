@@ -1,0 +1,28 @@
+# One-Tx Portfolio Manager config. Amounts are in token base units (USDC has 6 decimals: 25000000 = 25 USDC).
+# Native ETH: 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+chain_id: 42161              # 1 Ethereum, 42161 Arbitrum
+slippage_bps: 50             # 0.5%
+max_notional_usd: 500        # refuse any single run larger than this
+gas_reserve_wei: "2000000000000000"  # ETH kept back for gas when ETH is traded
+
+# rebalance: one transaction moves the wallet back to these weights
+rebalance:
+  drift_threshold_bps: 200   # do nothing unless some token is >2% off target
+  targets:
+    - { token: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831", weight_bps: 4000 }  # USDC
+    - { token: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1", weight_bps: 3000 }  # WETH
+    - { token: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f", weight_bps: 3000 }  # WBTC
+
+# dca: one transaction buys several assets from one input
+dca:
+  input: { token: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831", amount: "25000000" }  # 25 USDC
+  outputs:
+    - { token: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1", ratio_bps: 6000 }  # WETH
+    - { token: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f", ratio_bps: 4000 }  # WBTC
+
+# sweep: one transaction turns up to 6 leftover tokens into one
+sweep:
+  output: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"  # USDC
+  inputs:
+    - "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"  # WETH
+    - "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"  # WBTC

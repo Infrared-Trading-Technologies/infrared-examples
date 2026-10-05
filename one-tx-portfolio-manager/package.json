@@ -1,0 +1,26 @@
+{
+  "name": "one-tx-portfolio-manager",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Self-custodial portfolio rebalancing, multi-asset DCA and dust sweeping, each in one transaction via the Infrared API.",
+  "type": "module",
+  "bin": { "one-tx-portfolio-manager": "dist/cli.js" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run test",
+    "e2e": "npm run build && node --experimental-strip-types e2e/run.ts",
+    "rebalance": "node dist/cli.js rebalance",
+    "dca": "node dist/cli.js dca",
+    "sweep": "node dist/cli.js sweep"
+  },
+  "dependencies": {
+    "viem": "^2.57.3",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
