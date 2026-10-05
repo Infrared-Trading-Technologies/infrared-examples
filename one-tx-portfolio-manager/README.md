@@ -12,7 +12,7 @@ Rebalance a wallet, dollar-cost average into several assets, or sweep leftover t
 | `dca` | Splits one input across up to 6 assets | 25 USDC -> 60% WETH + 40% WBTC |
 | `sweep` | Turns up to 6 leftover tokens into one; tokens with no route are skipped and reported | WETH + WBTC -> USDC |
 
-Chains: Ethereum (`1`), Arbitrum (`42161`). Base is coming soon.
+Chains: Ethereum (`1`), Base (`8453`), Arbitrum (`42161`).
 
 ## Run it on a schedule (GitHub Actions, no server)
 
@@ -59,7 +59,7 @@ Add `--json` for a machine-readable plan.
 `npm run e2e` forks a real chain with [anvil](https://getfoundry.sh), funds a fresh wallet, runs every mode against the live API, and checks the resulting on-chain balances:
 
 ```bash
-FORK_RPC_URL=<rpc for the chain> INFRARED_API_KEY=<key> npm run e2e -- --chain arbitrum   # or ethereum
+FORK_RPC_URL=<rpc for the chain> INFRARED_API_KEY=<key> npm run e2e -- --chain arbitrum   # or ethereum, base
 ```
 
 ## API key

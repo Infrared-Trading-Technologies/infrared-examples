@@ -35,6 +35,12 @@ interface Tokens {
 }
 
 const CHAINS: Record<string, Tokens> = {
+  base: {
+    chainId: 8453,
+    usdc: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    weth: "0x4200000000000000000000000000000000000006",
+    btc: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+  },
   ethereum: {
     chainId: 1,
     usdc: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",

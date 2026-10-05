@@ -76,8 +76,16 @@ export class InfraredClient {
     return this.call<Quote>("POST", "/v1/quote", req);
   }
 
-  build(quoteId: string): Promise<Build> {
-    return this.call<Build>("POST", "/v1/build", { quote_id: quoteId });
+  /** A just-created quote can briefly 404 on build while it is being stored, so NOT_FOUND is retried here too. */
+  async build(quoteId: string): Promise<Build> {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await this.call<Build>("POST", "/v1/build", { quote_id: quoteId });
+      } catch (err) {
+        if (!(err instanceof ApiError) || err.status !== 404 || attempt >= RETRIES) throw err;
+        await new Promise((r) => setTimeout(r, 1000 * attempt));
+      }
+    }
   }
 
   async prices(chainId: number, tokens: Address[]): Promise<Map<string, number>> {

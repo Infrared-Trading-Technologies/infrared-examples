@@ -1,6 +1,6 @@
 # One-Tx Portfolio Manager config. Amounts are in token base units (USDC has 6 decimals: 25000000 = 25 USDC).
 # Native ETH: 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-chain_id: 42161              # 1 Ethereum, 42161 Arbitrum
+chain_id: 42161              # 1 Ethereum, 8453 Base, 42161 Arbitrum
 slippage_bps: 50             # 0.5%
 max_notional_usd: 500        # refuse any single run larger than this
 gas_reserve_wei: "2000000000000000"  # ETH kept back for gas when ETH is traded

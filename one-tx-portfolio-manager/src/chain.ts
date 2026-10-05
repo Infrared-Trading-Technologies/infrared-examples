@@ -11,12 +11,11 @@ import {
   type Account,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { arbitrum, mainnet } from "viem/chains";
+import { arbitrum, base, mainnet } from "viem/chains";
 import { BotError, NATIVE } from "./config.js";
 import type { Approval, Build } from "./infrared.js";
 
-// Base (8453) is held back until an Infrared split-routing fix ships; it is a one-line addition here.
-const CHAINS: Record<number, Chain> = { [mainnet.id]: mainnet, [arbitrum.id]: arbitrum };
+const CHAINS: Record<number, Chain> = { [mainnet.id]: mainnet, [base.id]: base, [arbitrum.id]: arbitrum };
 
 export interface Wallet {
   chain: Chain;
