@@ -1,0 +1,39 @@
+name: infrared-trading-mcp
+
+on:
+  push:
+    paths: ["infrared-trading-mcp/**", ".github/workflows/infrared-trading-mcp.yml"]
+  pull_request:
+    paths: ["infrared-trading-mcp/**", ".github/workflows/infrared-trading-mcp.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrared-trading-mcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: infrared-trading-mcp/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      # Smoke: the server starts over stdio and answers list_chains with no secrets at all.
+      - run: |
+          node --input-type=module -e '
+            import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+            import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+            const c = new Client({ name: "ci", version: "0" });
+            await c.connect(new StdioClientTransport({ command: "node", args: ["dist/index.js"] }));
+            const r = await c.callTool({ name: "list_chains", arguments: {} });
+            if (r.isError) throw new Error(r.content[0].text);
+            console.log(r.content[0].text);
+            await c.close();
+          '

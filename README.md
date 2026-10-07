@@ -5,5 +5,6 @@ Ready-to-run, self-custodial tools built on the [Infrared](https://infraredtradi
 | Example | What it does |
 |---|---|
 | [one-tx-portfolio-manager](one-tx-portfolio-manager/) | Rebalance a wallet, DCA into several assets, or sweep leftover tokens, each in one transaction. Runs on a schedule via GitHub Actions. |
+| [infrared-trading-mcp](infrared-trading-mcp/) | MCP server for Claude and other agents: quote, build, pre-flight and (opt-in, capped, confirmed) execute trades self-custodially. |
 
 MIT licensed.

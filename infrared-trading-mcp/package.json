@@ -1,0 +1,25 @@
+{
+  "name": "infrared-trading-mcp",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "MCP server that lets Claude and other agents quote, build, pre-flight and (opt-in) execute self-custodial trades through the Infrared API.",
+  "type": "module",
+  "bin": { "infrared-trading-mcp": "dist/index.js" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "vitest run test",
+    "e2e": "npm run build && node --experimental-strip-types e2e/run.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "viem": "^2.57.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
