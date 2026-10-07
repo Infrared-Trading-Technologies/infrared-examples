@@ -1,0 +1,33 @@
+name: telegram-partner-fee-trading-bot
+
+on:
+  push:
+    paths: ["telegram-partner-fee-trading-bot/**", ".github/workflows/telegram-partner-fee-trading-bot.yml"]
+  pull_request:
+    paths: ["telegram-partner-fee-trading-bot/**", ".github/workflows/telegram-partner-fee-trading-bot.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: telegram-partner-fee-trading-bot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: telegram-partner-fee-trading-bot/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      # Smoke: config validation fails fast with a clear message when secrets are missing.
+      - run: |
+          set +e
+          out=$(node dist/index.js 2>&1); code=$?
+          echo "$out"
+          [ "$code" -ne 0 ] && echo "$out" | grep -q "TELEGRAM_BOT_TOKEN is required"

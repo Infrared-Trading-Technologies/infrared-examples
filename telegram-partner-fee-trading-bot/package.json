@@ -1,0 +1,33 @@
+{
+  "name": "telegram-partner-fee-trading-bot",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Self-custodial Telegram trading bot on the Infrared API: users sign in their own wallet over WalletConnect, the operator earns a partner fee on every swap.",
+  "type": "module",
+  "bin": {
+    "telegram-partner-fee-trading-bot": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "vitest run test",
+    "e2e": "npm run build && node --experimental-strip-types e2e/run.ts"
+  },
+  "dependencies": {
+    "@walletconnect/sign-client": "^2.25.0",
+    "grammy": "^1.46.0",
+    "qrcode": "^1.5.4",
+    "unstorage": "^1.17.5",
+    "viem": "^2.57.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/qrcode": "^1.5.5",
+    "@walletconnect/types": "^2.25.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
