@@ -1,0 +1,24 @@
+{
+  "name": "limit-and-stop-order-keeper",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Self-custodial limit, stop-loss and take-profit orders on any token pair, filled at the executable price through the Infrared API.",
+  "type": "module",
+  "bin": { "limit-and-stop-order-keeper": "dist/cli.js" },
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/cli.js",
+    "test": "vitest run test",
+    "e2e": "npm run build && node --experimental-strip-types e2e/run.ts"
+  },
+  "dependencies": {
+    "viem": "^2.57.3",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

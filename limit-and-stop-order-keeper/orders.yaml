@@ -1,0 +1,35 @@
+# Orders the keeper watches. Prices are in human units; amounts are human token amounts or "all".
+# Dry-run by default: nothing is sent until you run with --execute.
+interval_seconds: 60
+max_notional_usd: 500          # default per-order cap; any fill worth more is refused
+gas_reserve_wei: "2000000000000000"   # 0.002 ETH kept back when selling the native currency with "all"
+state_file: ./data/state.json  # fill-once memory; back it up with the keeper
+
+orders:
+  # Sell 0.05 WETH for USDC if WETH drops to 2200 USDC or below (price = USDC per WETH).
+  - id: weth-stop
+    chain_id: 42161
+    type: stop_loss
+    sell: { token: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1", amount: "0.05" }
+    buy: { token: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" }
+    trigger_price: 2200
+    slippage_bps: 100
+    confirmations: 2
+
+  # Take profit: sell all WETH once it trades at 3500 USDC or above.
+  - id: weth-take-profit
+    chain_id: 42161
+    type: take_profit
+    sell: { token: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1", amount: all }
+    buy: { token: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831" }
+    trigger_price: 3500
+    expires: 2026-12-31T00:00:00Z
+
+  # Limit buy: spend 100 USDC on WETH once WETH is 2300 USDC or cheaper (price = USDC per WETH).
+  - id: weth-limit-buy
+    chain_id: 42161
+    type: limit_buy
+    sell: { token: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831", amount: "100" }
+    buy: { token: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1" }
+    trigger_price: 2300
+    max_notional_usd: 120

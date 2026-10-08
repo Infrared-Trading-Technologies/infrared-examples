@@ -1,0 +1,33 @@
+name: limit-and-stop-order-keeper
+
+on:
+  push:
+    paths: ["limit-and-stop-order-keeper/**", ".github/workflows/limit-and-stop-order-keeper.yml"]
+  pull_request:
+    paths: ["limit-and-stop-order-keeper/**", ".github/workflows/limit-and-stop-order-keeper.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: limit-and-stop-order-keeper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: limit-and-stop-order-keeper/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      # Smoke: the shipped orders.yaml parses and the CLI fails fast on missing secrets.
+      - run: |
+          set +e
+          out=$(node dist/cli.js --once 2>&1); code=$?
+          echo "$out"
+          [ "$code" -ne 0 ] && echo "$out" | grep -q "RPC_URL_42161"
